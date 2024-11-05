@@ -23,7 +23,7 @@ class GestorTareasGUI:
         self.agregar_btn = ttk.Button(self.frame, text="Agregar Tarea", command=self.agregar_tarea)
         self.agregar_btn.grid(row=2, column=1, sticky=tk.W)
 
-        self.tareas_listbox = tk.Listbox(self.frame, height=10, width=50)
+        self.tareas_listbox = tk.Listbox(self.frame, height=10, width=80)  # Ajustar el ancho para visualizar más texto
         self.tareas_listbox.grid(row=3, column=1, sticky=tk.W)
 
         self.completar_btn = ttk.Button(self.frame, text="Marcar como Completada", command=self.marcar_completada)
@@ -46,8 +46,12 @@ class GestorTareasGUI:
     def actualizar_lista(self):
         self.tareas_listbox.delete(0, tk.END)
         for indice, tarea in enumerate(self.gestor.obtener_tareas()):
-            estado = "Completada" if tarea.completada else "Pendiente"
-            self.tareas_listbox.insert(tk.END, f"{indice + 1}. {tarea.titulo} - {estado}")
+            # Mostrar símbolo ✓ para completada, X para pendiente
+            simbolo_estado = "✓" if tarea.completada else "X"
+            self.tareas_listbox.insert(
+                tk.END,
+                f"{indice + 1}. {simbolo_estado} {tarea.titulo}\n  - Descripción: {tarea.descripcion}"
+            )
 
     def marcar_completada(self):
         seleccion = self.tareas_listbox.curselection()
